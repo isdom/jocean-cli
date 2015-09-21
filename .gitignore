@@ -1,9 +1,4 @@
 /bin
 .DS_Store
-.idea
-.iml
-.project
-.classpath
-.settings/
 build/
 logs/
