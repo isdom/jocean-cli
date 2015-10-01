@@ -13,9 +13,7 @@ import org.jocean.cli.CliContext;
 public class ExitCommand implements CliCommand<CliContext> {
 
     public String execute(final CliContext ctx, final String... args) throws Exception {
-        System.exit(-1);
-        
-        return null;
+        throw new StopException();
     }
 
     public String getAction() {
