@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.jocean.cli.cmd.StopException;
 import org.jocean.idiom.ExceptionUtils;
 
 /**
@@ -34,7 +35,7 @@ public class CliShell<CTX extends CliContext> {
         return execute(words.toArray(new String[0]));
     }
 
-    public String execute(final String[] cmds) {
+    public String execute(final String[] cmds) throws StopException {
         if ( null == cmds || cmds.length == 0 ) {
             return "failed: cmdline is empty";
         }
@@ -53,6 +54,9 @@ public class CliShell<CTX extends CliContext> {
                     Arrays.copyOfRange(cmds, 1, cmds.length));
         }
         catch( Exception e) {
+            if (e instanceof StopException ) {
+                throw (StopException)e;
+            }
             return ExceptionUtils.exception2detail(e);
         }
     }
