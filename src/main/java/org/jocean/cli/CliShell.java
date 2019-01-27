@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.jocean.cli;
 
@@ -16,12 +16,12 @@ import org.jocean.idiom.ExceptionUtils;
  *
  */
 public class CliShell<CTX extends CliContext> {
-    
+
     private CTX                 commandContext;
-    
+
     private String              wordDelim = " ";
-    
-    
+
+
     public String execute(final String cmdline) {
         final List<String> words = new ArrayList<String>();
         final StringTokenizer   st = new StringTokenizer(cmdline, wordDelim, false);
@@ -31,7 +31,7 @@ public class CliShell<CTX extends CliContext> {
         if ( words.isEmpty() ) {
             return "failed: cmdline is empty";
         }
-        
+
         return execute(words.toArray(new String[0]));
     }
 
@@ -39,21 +39,20 @@ public class CliShell<CTX extends CliContext> {
         if ( null == cmds || cmds.length == 0 ) {
             return "failed: cmdline is empty";
         }
-        
+
         final String action = cmds[0];
-        
-        final CliCommand<CTX> cmd = 
+
+        final CliCommand<CTX> cmd =
             commandContext.getCommandRepository().findCommandByAction(action);
-        
+
         if ( null == cmd ) {
             return "failed: can not find [" + action + "] command";
         }
-        
+
         try {
-            return cmd.execute(commandContext, 
-                    Arrays.copyOfRange(cmds, 1, cmds.length));
+            return cmd.execute(commandContext, Arrays.copyOfRange(cmds, 1, cmds.length));
         }
-        catch( Exception e) {
+        catch( final Exception e) {
             if (e instanceof StopException ) {
                 throw (StopException)e;
             }
@@ -71,7 +70,7 @@ public class CliShell<CTX extends CliContext> {
     /**
      * @param commandContext the commandContext to set
      */
-    public void setCommandContext(CTX commandContext) {
+    public void setCommandContext(final CTX commandContext) {
         this.commandContext = commandContext;
     }
 
@@ -85,7 +84,7 @@ public class CliShell<CTX extends CliContext> {
     /**
      * @param wordDelim the wordDelim to set
      */
-    public void setWordDelim(String wordDelim) {
+    public void setWordDelim(final String wordDelim) {
         this.wordDelim = wordDelim;
     }
 }
