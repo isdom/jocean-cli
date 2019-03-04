@@ -18,8 +18,7 @@ public class DefaultCommandRepository implements CommandRepository {
     private static final CliCommand[] EMPTY_CMDS = new CliCommand[0];
     private static final String[] EMPTY_STRS = new String[0];
 
-    private final Map<String, CliCommand<? extends CliContext>> cmds =
-        new HashMap<String, CliCommand<? extends CliContext>>();
+    private final Map<String, CliCommand<? extends CliContext>> cmds = new HashMap<>();
 
     public DefaultCommandRepository addCommand(final CliCommand<? extends CliContext> cmd) {
         cmds.put(cmd.getAction(), cmd);
@@ -35,7 +34,7 @@ public class DefaultCommandRepository implements CommandRepository {
     }
 
     public String[] getCommandActionAsArray() {
-        return  cmds.keySet().toArray(EMPTY_STRS);
+        return cmds.keySet().toArray(EMPTY_STRS);
     }
 
     @Override
@@ -48,5 +47,4 @@ public class DefaultCommandRepository implements CommandRepository {
     public <CTX extends CliContext> CliCommand<CTX> findCommandByAction(final String action) {
         return (CliCommand<CTX>)cmds.get(action);
     }
-
 }
