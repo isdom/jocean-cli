@@ -42,8 +42,7 @@ public class CliShell<CTX extends CliContext> {
 
         final String action = cmds[0];
 
-        final CliCommand<CTX> cmd =
-            commandContext.getCommandRepository().findCommandByAction(action);
+        final CliCommand<CTX> cmd = commandContext.getCommandRepository().findCommandByAction(action);
 
         if ( null == cmd ) {
             return "failed: can not find [" + action + "] command";
