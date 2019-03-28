@@ -37,12 +37,13 @@ public class DefaultCommandRepository implements CommandRepository, CommandRepos
         return  this;
     }
 
-    public void addCommands(final Collection<? extends CliCommand<? extends CliContext>> cmds) {
+    public DefaultCommandRepository addCommands(final Collection<? extends CliCommand<? extends CliContext>> cmds) {
 //        this._cmds.clear();
 
         for ( final CliCommand<? extends CliContext> cmd : cmds ) {
             addCommand(cmd);
         }
+        return  this;
     }
 
     public String[] getCommandActionAsArray() {
