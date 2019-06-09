@@ -17,12 +17,10 @@ import org.jocean.idiom.ExceptionUtils;
  */
 public class CliShell<CTX extends CliContext> {
 
-    private CTX                 commandContext;
-
     private String              wordDelim = " ";
 
 
-    public String execute(final String cmdline) {
+    public String execute(final CTX cmdCtx, final String cmdline) {
         final List<String> words = new ArrayList<String>();
         final StringTokenizer   st = new StringTokenizer(cmdline, wordDelim, false);
         while (st.hasMoreTokens()) {
@@ -32,21 +30,17 @@ public class CliShell<CTX extends CliContext> {
             return "failed: cmdline is empty";
         }
 
-        return execute(words.toArray(new String[0]));
+        return execute(cmdCtx, words.toArray(new String[0]));
     }
 
-    public String execute(final String[] cmds) throws StopException {
-        return execute(commandContext, commandContext.getCommandRepository(), cmds);
-    }
-
-    public String execute(final CTX cmdCtx, final CommandRepository cmdRepo, final String[] cmds) throws StopException {
+    public String execute(final CTX cmdCtx, final String[] cmds) throws StopException {
         if ( null == cmds || cmds.length == 0 ) {
             return "failed: cmdline is empty";
         }
 
         final String action = cmds[0];
 
-        final CliCommand<CTX> cmd = cmdRepo.findCommandByAction(action);
+        final CliCommand<CTX> cmd = cmdCtx.getCommandRepository().findCommandByAction(action);
 
         if ( null == cmd ) {
             return "failed: can not find [" + action + "] command";
@@ -61,20 +55,6 @@ public class CliShell<CTX extends CliContext> {
             }
             return ExceptionUtils.exception2detail(e);
         }
-    }
-
-    /**
-     * @return the commandContext
-     */
-    public CTX getCommandContext() {
-        return commandContext;
-    }
-
-    /**
-     * @param commandContext the commandContext to set
-     */
-    public void setCommandContext(final CTX commandContext) {
-        this.commandContext = commandContext;
     }
 
     /**
