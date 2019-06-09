@@ -36,20 +36,24 @@ public class CliShell<CTX extends CliContext> {
     }
 
     public String execute(final String[] cmds) throws StopException {
+        return execute(commandContext, commandContext.getCommandRepository(), cmds);
+    }
+
+    public String execute(final CTX cmdCtx, final CommandRepository cmdRepo, final String[] cmds) throws StopException {
         if ( null == cmds || cmds.length == 0 ) {
             return "failed: cmdline is empty";
         }
 
         final String action = cmds[0];
 
-        final CliCommand<CTX> cmd = commandContext.getCommandRepository().findCommandByAction(action);
+        final CliCommand<CTX> cmd = cmdRepo.findCommandByAction(action);
 
         if ( null == cmd ) {
             return "failed: can not find [" + action + "] command";
         }
 
         try {
-            return cmd.execute(commandContext, Arrays.copyOfRange(cmds, 1, cmds.length));
+            return cmd.execute(cmdCtx, Arrays.copyOfRange(cmds, 1, cmds.length));
         }
         catch( final Exception e) {
             if (e instanceof StopException ) {
